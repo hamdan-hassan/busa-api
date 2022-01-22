@@ -44,8 +44,8 @@ const db = knex({
   connection: {
     host: "127.0.0.1",
     port: 5432,
-    user: "postgres",
-    password: "code123",
+    user: process.env.PG_USER,
+    password: process.env.PG_PASS,
     database: "busa",
   },
 });
@@ -120,7 +120,7 @@ app.put("/update", (req, res) => {
   update.handleUpdate(req, res, db);
 });
 
-app.delete("/remove/:id", (req, res) => {
+app.delete("/remove/:id/:level", (req, res) => {
   remove.handleRemove(req, res, db);
 });
 
@@ -132,11 +132,11 @@ app.delete("/delete-past-question/:sno", (req, res) => {
   deletePastQuestions.handleDeletePastQuestions(req, res, db);
 });
 
-app.delete("/remove-register/:id", (req, res) => {
+app.delete("/remove-register/:id/:level", (req, res) => {
   removeRegister.handleRemoveRegister(req, res, db);
 });
 
-app.delete("/remove-login/:id", (req, res) => {
+app.delete("/remove-login/:id/:level", (req, res) => {
   removeLogin.handleRemoveLogin(req, res, db);
 });
 
@@ -148,7 +148,7 @@ app.put("/updatePassword", (req, res) => {
   updatePassword.handleChangePassword(req, res, db, bcrypt);
 });
 
-app.post("/register", (req, res) => {
+app.put("/register", (req, res) => {
   register.handleRegister(req, res, db);
 });
 
@@ -162,6 +162,30 @@ app.put("/article", (req, res) => {
 
 app.get("/courseStats", (req, res) => {
   courseStats.handleCourseStats(req, res, db);
+});
+
+app.get("/registered-students", (req, res) => {
+  db("registration")
+    .count("*")
+    .where("registered", "true")
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
+app.get("/not-registered-students", (req, res) => {
+  db("registration")
+    .count("*")
+    .where("registered", "false")
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 });
 
 app.get("/tshirtStats", (req, res) => {
@@ -306,6 +330,24 @@ app.post("/validateid", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.json(err);
+    });
+});
+
+app.post("/create-registration", (req, res) => {
+  const { FirstName, MiddleName, LastName, StudentID, Level, Gender } =
+    req.body;
+
+  db("registration")
+    .insert({
+      first_name: FirstName,
+      middle_name: MiddleName,
+      last_name: LastName,
+      gender: Gender,
+      std_id: StudentID.toUpperCase(),
+      level: Level,
+    })
+    .then((res) => {
+      console.log(res);
     });
 });
 

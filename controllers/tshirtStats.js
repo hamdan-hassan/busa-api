@@ -2,7 +2,8 @@ const handleTshirtStats = (req, res, db) => {
   let arr = [];
   db("registration")
     .count("*")
-    .where("size", "Small")
+    .where({ size: "Small" })
+    .where({ registered: "true" })
     .then((data) => {
       arr.push(data[0]);
     });

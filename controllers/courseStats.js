@@ -69,6 +69,7 @@ const handleCourseStats = (req, res, db) => {
     .then((data) => {
       arr.push(data[0]);
       res.json(arr);
+      console.log(arr);
     });
 };
 

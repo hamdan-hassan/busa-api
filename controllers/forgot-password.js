@@ -64,13 +64,13 @@ const handleForgotPassword = (req, res, db, jwt, nodemailer) => {
         host: "smtp-relay.sendinblue.com",
         port: 587,
         auth: {
-          user: "hassanmohammad922@gmail.com",
-          pass: "yYsNL5J48bc6OfHr",
+          user: process.env.NODE_MAILER_USER,
+          pass: process.env.NODE_MAILER_PASS,
         },
       });
 
       const mailOptions = {
-        from: "info.busa99@gmail.com",
+        from: process.env.FROM_EMAIL,
         to: email,
         subject: "Reset Password",
         text: `Reset your password with the following link. http://localhost:3001/reset/${std_id}/${token} Please note the link will expire in 30 minutes.`,

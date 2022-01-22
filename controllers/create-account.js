@@ -30,6 +30,7 @@ const handleCreateAccount = (req, res, db, bcrypt) => {
               hash: hash,
               email: Email,
               std_id: StudentID.toUpperCase(),
+              level: Level,
             })
             .into("login")
             .returning("email")
@@ -54,6 +55,7 @@ const handleCreateAccount = (req, res, db, bcrypt) => {
                     .returning("*")
                     .insert({
                       std_id: dueId[0].toUpperCase(),
+                      level: Level,
                       level_100: "Pending",
                       level_200: "Pending",
                       level_300: "Pending",
@@ -63,6 +65,7 @@ const handleCreateAccount = (req, res, db, bcrypt) => {
                     .then((souvernirId) => {
                       return trx("souvenirs").returning("*").insert({
                         std_id: souvernirId[0].toUpperCase(),
+                        level: Level,
                         t_shirt: "Pending",
                         books: "Pending",
                       });

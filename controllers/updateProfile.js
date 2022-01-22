@@ -1,6 +1,5 @@
 const hanldeUpdateProfile = (req, res, db) => {
   const {
-    stdId,
     id,
     firstName,
     middleName,
@@ -23,53 +22,8 @@ const hanldeUpdateProfile = (req, res, db) => {
       dob: dob,
       gender: gender,
       level: level,
-      std_id: stdId,
     })
-    .then(() => {
-      db("dues")
-        .where({ std_id: id })
-        .update({ std_id: stdId })
-        .then((resp) => {})
-        .catch((err) => {
-          console.log(err);
-        });
-    })
-    .then(() => {
-      db("login")
-        .where({ std_id: id })
-        .update({ std_id: stdId })
-        .then((resp) => {})
-        .catch((err) => {
-          console.log(err);
-        });
-    })
-    .then(() => {
-      db("profile_images")
-        .where({ std_id: id })
-        .update({ std_id: stdId })
-        .then((resp) => {})
-        .catch((err) => {
-          console.log(err);
-        });
-    })
-    .then(() => {
-      db("souvenirs")
-        .where({ std_id: id })
-        .update({ std_id: stdId })
-        .then((resp) => {})
-        .catch((err) => {
-          console.log(err);
-        });
-    })
-    .then(() => {
-      db("registration")
-        .where({ std_id: id })
-        .update({ std_id: stdId })
-        .then((resp) => {})
-        .catch((err) => {
-          console.log(err);
-        });
-    })
+
     .then((row) => {
       res.json("updated");
     })

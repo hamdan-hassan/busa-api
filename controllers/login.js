@@ -19,6 +19,7 @@ const handleLogin = (req, res, db, bcrypt) => {
               "middle_name",
               "last_name",
               "email",
+              "level",
               "gender",
               "phone_number",
               "dob"
