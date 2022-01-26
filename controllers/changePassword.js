@@ -17,7 +17,7 @@ const handleChangePassword = (req, res, db, bcrypt) => {
               res.json("updated");
             })
             .catch((err) => {
-              console.log(err);
+              res.json(err);
             });
         } else {
           res.json("wrong password");
@@ -25,7 +25,7 @@ const handleChangePassword = (req, res, db, bcrypt) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      res.json(err);
     });
 };
 

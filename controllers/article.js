@@ -7,7 +7,6 @@ const handleArticle = (req, res, db) => {
       res.json(response);
     })
     .catch((err) => {
-      console.log(err.toString());
       res.json(err);
     });
 

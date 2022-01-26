@@ -5,6 +5,9 @@ const handleCourseStats = (req, res, db) => {
     .where("programme", "BCom(Human Resource Management)")
     .then((data) => {
       arr.push(data[0]);
+    })
+    .catch((err) => {
+      res.json(err);
     });
 
   db("users")
@@ -12,6 +15,9 @@ const handleCourseStats = (req, res, db) => {
     .where("programme", "BCom(Accounting)")
     .then((data) => {
       arr.push(data[0]);
+    })
+    .catch((err) => {
+      res.json(err);
     });
 
   db("users")
@@ -19,6 +25,9 @@ const handleCourseStats = (req, res, db) => {
     .where("programme", "BCom(Banking and Finance)")
     .then((data) => {
       arr.push(data[0]);
+    })
+    .catch((err) => {
+      res.json(err);
     });
 
   db("users")
@@ -26,6 +35,9 @@ const handleCourseStats = (req, res, db) => {
     .where("programme", "BCom(Marketing)")
     .then((data) => {
       arr.push(data[0]);
+    })
+    .catch((err) => {
+      res.json(err);
     });
 
   db("users")
@@ -33,6 +45,9 @@ const handleCourseStats = (req, res, db) => {
     .where("programme", "Bsc Accounting")
     .then((data) => {
       arr.push(data[0]);
+    })
+    .catch((err) => {
+      res.json(err);
     });
 
   db("users")
@@ -40,6 +55,9 @@ const handleCourseStats = (req, res, db) => {
     .where("programme", "Bsc Accounting and Finance")
     .then((data) => {
       arr.push(data[0]);
+    })
+    .catch((err) => {
+      res.json(err);
     });
 
   db("users")
@@ -47,6 +65,9 @@ const handleCourseStats = (req, res, db) => {
     .where("programme", "BA Integreated Business Studies")
     .then((data) => {
       arr.push(data[0]);
+    })
+    .catch((err) => {
+      res.json(err);
     });
 
   db("users")
@@ -54,6 +75,9 @@ const handleCourseStats = (req, res, db) => {
     .where("programme", "BA Accounting")
     .then((data) => {
       arr.push(data[0]);
+    })
+    .catch((err) => {
+      res.json(err);
     });
 
   db("users")
@@ -61,6 +85,9 @@ const handleCourseStats = (req, res, db) => {
     .where("programme", "BA Management")
     .then((data) => {
       arr.push(data[0]);
+    })
+    .catch((err) => {
+      res.json(err);
     });
 
   db("users")
@@ -69,7 +96,9 @@ const handleCourseStats = (req, res, db) => {
     .then((data) => {
       arr.push(data[0]);
       res.json(arr);
-      console.log(arr);
+    })
+    .catch((err) => {
+      res.json(err);
     });
 };
 
