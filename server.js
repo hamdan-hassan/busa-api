@@ -56,115 +56,115 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors());
 
 //login api
-app.post("/login", (req, res) => {
+app.post("/api/login", (req, res) => {
   login.handleLogin(req, res, db, bcrypt);
 });
 
-app.get("/isRegistered/:id", (req, res) => {
+app.get("/api/isRegistered/:id", (req, res) => {
   isRegistered.handleIsRegistered(req, res, db);
 });
 
-app.get("/dues/:id", (req, res) => {
+app.get("/api/dues/:id", (req, res) => {
   dues.handleDues(req, res, db);
 });
 
-app.get("/souvenirs/:id", (req, res) => {
+app.get("/api/souvenirs/:id", (req, res) => {
   souvenirs.handleSouvenirs(req, res, db);
 });
 
-app.get("/getStudents", (req, res) => {
+app.get("/api/getStudents", (req, res) => {
   getStudents.handleGetStudents(req, res, db);
 });
 
-app.post("/forgot-password", (req, res) => {
+app.post("/api/forgot-password", (req, res) => {
   forgotPassword.handleForgotPassword(req, res, db, jwt, nodemailer);
 });
 
-app.post("/upload-handouts", (req, res) => {
+app.post("/api/upload-handouts", (req, res) => {
   uploadHandouts.handleUploadHandouts(req, res, db);
 });
 
-app.post("/upload-past-questions", (req, res) => {
+app.post("/api/upload-past-questions", (req, res) => {
   uploadPastQuestions.handleUploadPastQuestions(req, res, db);
 });
 
-app.post("/reset/:id/:pass/:token", (req, res) => {
+app.post("/api/reset/:id/:pass/:token", (req, res) => {
   reset.handleReset(req, res, db, bcrypt, jwt);
 });
 
-app.get("/getArticle", (req, res) => {
+app.get("/api/getArticle", (req, res) => {
   getArticle.handleGetArticle(req, res, db);
 });
 
-app.post("/create-account", (req, res) => {
+app.post("/api/create-account", (req, res) => {
   createAccount.handleCreateAccount(req, res, db, bcrypt);
 });
 
-app.get("/uploaded-handouts", (req, res) => {
+app.get("/api/uploaded-handouts", (req, res) => {
   uploadedHandouts.handleUploadedHandouts(req, res, db);
 });
 
-app.post("/get-handouts", (req, res) => {
+app.post("/api/get-handouts", (req, res) => {
   getHandouts.handleGetHandouts(req, res, db);
 });
 
-app.post("/get-past-questions", (req, res) => {
+app.post("/api/get-past-questions", (req, res) => {
   getPastQuestions.handleGetPastQuestions(req, res, db);
 });
 
-app.get("/uploaded-past-questions", (req, res) => {
+app.get("/api/uploaded-past-questions", (req, res) => {
   uploadedPastQuestion.handleUploadedPastQuestions(req, res, db);
 });
 
-app.put("/update", (req, res) => {
+app.put("/api/update", (req, res) => {
   update.handleUpdate(req, res, db);
 });
 
-app.delete("/remove/:id/:level", (req, res) => {
+app.delete("/api/remove/:id/:level", (req, res) => {
   remove.handleRemove(req, res, db);
 });
 
-app.delete("/delete-handout/:sno", (req, res) => {
+app.delete("/api/delete-handout/:sno", (req, res) => {
   deleteHandout.handleDeleteHandout(req, res, db);
 });
 
-app.delete("/delete-past-question/:sno", (req, res) => {
+app.delete("/api/delete-past-question/:sno", (req, res) => {
   deletePastQuestions.handleDeletePastQuestions(req, res, db);
 });
 
-app.delete("/remove-register/:id/:level", (req, res) => {
+app.delete("/api/remove-register/:id/:level", (req, res) => {
   removeRegister.handleRemoveRegister(req, res, db);
 });
 
-app.delete("/remove-login/:id/:level", (req, res) => {
+app.delete("/api/remove-login/:id/:level", (req, res) => {
   removeLogin.handleRemoveLogin(req, res, db);
 });
 
-app.put("/updateProfile", (req, res) => {
+app.put("/api/updateProfile", (req, res) => {
   updateProfile.hanldeUpdateProfile(req, res, db);
 });
 
-app.put("/updatePassword", (req, res) => {
+app.put("/api/updatePassword", (req, res) => {
   updatePassword.handleChangePassword(req, res, db, bcrypt);
 });
 
-app.put("/register", (req, res) => {
+app.put("/api/register", (req, res) => {
   register.handleRegister(req, res, db);
 });
 
-app.post("/create-profile-img", (req, res) => {
+app.post("/api/create-profile-img", (req, res) => {
   profileImage.handleProfileImage(req, res, db);
 });
 
-app.put("/article", (req, res) => {
+app.put("/api/article", (req, res) => {
   article.handleArticle(req, res, db);
 });
 
-app.get("/courseStats", (req, res) => {
+app.get("/api/courseStats", (req, res) => {
   courseStats.handleCourseStats(req, res, db);
 });
 
-app.get("/registered-students", (req, res) => {
+app.get("/api/registered-students", (req, res) => {
   db("registration")
     .count("*")
     .where("registered", "true")
@@ -176,7 +176,7 @@ app.get("/registered-students", (req, res) => {
     });
 });
 
-app.get("/not-registered-students", (req, res) => {
+app.get("/api/not-registered-students", (req, res) => {
   db("registration")
     .count("*")
     .where("registered", "false")
@@ -188,23 +188,23 @@ app.get("/not-registered-students", (req, res) => {
     });
 });
 
-app.get("/tshirtStats", (req, res) => {
+app.get("/api/tshirtStats", (req, res) => {
   tshirtStats.handleTshirtStats(req, res, db);
 });
 
-app.get("/genderStats", (req, res) => {
+app.get("/api/genderStats", (req, res) => {
   genderStats.handleGenderStats(req, res, db);
 });
 
-app.get("/totalStduents", (req, res) => {
+app.get("/api/totalStduents", (req, res) => {
   totalStduents.handleTotalStudents(req, res, db);
 });
 
-app.get("/profile/:id", (req, res) => {
+app.get("/api/profile/:id", (req, res) => {
   profile.handleProfile(req, res, db);
 });
 
-app.put("/upload", (req, res) => {
+app.put("/api/upload", (req, res) => {
   const { ImageData, Id } = req.body;
 
   db("profile_images")
@@ -220,7 +220,7 @@ app.put("/upload", (req, res) => {
     });
 });
 
-app.post("/img", (req, res) => {
+app.post("/api/img", (req, res) => {
   const { Id } = req.body;
   db("profile_images")
     .select("img_data")
@@ -233,7 +233,7 @@ app.post("/img", (req, res) => {
     });
 });
 
-app.post("/uploadids", (req, res) => {
+app.post("/api/uploadids", (req, res) => {
   const { IDs, Level } = req.body;
 
   IDs.forEach((item, index, arr) => {
@@ -255,7 +255,7 @@ app.post("/uploadids", (req, res) => {
   });
 });
 
-app.get("/uploaded-ids", (req, res) => {
+app.get("/api/uploaded-ids", (req, res) => {
   db.select("*")
     .from("student_ids")
     .then((row) => {
@@ -266,7 +266,7 @@ app.get("/uploaded-ids", (req, res) => {
     });
 });
 
-app.put("/remove-img", (req, res) => {
+app.put("/api/remove-img", (req, res) => {
   const { Id } = req.body;
   db("profile_images")
     .update({
@@ -281,7 +281,7 @@ app.put("/remove-img", (req, res) => {
     });
 });
 
-app.delete("/delete-id/:id", (req, res) => {
+app.delete("/api/delete-id/:id", (req, res) => {
   const { id } = req.params;
 
   db("student_ids")
@@ -295,7 +295,7 @@ app.delete("/delete-id/:id", (req, res) => {
     });
 });
 
-app.delete("/delete-ids/:level", (req, res) => {
+app.delete("/api/delete-ids/:level", (req, res) => {
   const { level } = req.params;
 
   db("student_ids")
@@ -310,7 +310,7 @@ app.delete("/delete-ids/:level", (req, res) => {
     });
 });
 
-app.post("/validateid", (req, res) => {
+app.post("/api/validateid", (req, res) => {
   const { ID, Level } = req.body;
   db("student_ids")
     .select("std_id", "level")
@@ -333,7 +333,7 @@ app.post("/validateid", (req, res) => {
     });
 });
 
-app.post("/create-registration", (req, res) => {
+app.post("/api/create-registration", (req, res) => {
   const { FirstName, MiddleName, LastName, StudentID, Level, Gender } =
     req.body;
 
