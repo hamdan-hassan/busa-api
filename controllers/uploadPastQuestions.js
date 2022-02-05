@@ -1,11 +1,12 @@
 const handleUploadPastQuestions = (req, res, db) => {
-  const { Programme, Level, Trimester, Url } = req.body;
+  const { Programme, Level, Trimester, Doc, Url } = req.body;
 
   db("past_questions")
     .insert({
       programme: Programme,
       level: Level,
       trimester: Trimester,
+      doc: Doc,
       url: Url,
     })
     .then((response) => {

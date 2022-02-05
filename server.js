@@ -38,6 +38,7 @@ const deletePastQuestions = require("./controllers/deletePastQuestion");
 const getHandouts = require("./controllers/getHandouts");
 const getPastQuestions = require("./controllers/getPastQuestions");
 const profileImage = require("./controllers/create-profile-img");
+const { response } = require("express");
 
 const db = knex({
   client: "pg",
@@ -330,6 +331,68 @@ app.post("/api/validateid", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.json(err);
+    });
+});
+
+app.post("/api/upload-key-people", (req, res) => {
+  const { Name, Position, ImageData } = req.body;
+
+  db("key_people")
+    .insert({
+      name: Name,
+      position: Position,
+      img_data: ImageData,
+    })
+    .then((response) => {
+      res.send("updated");
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+app.get("/api/uploaded-key-people", (req, res) => {
+  db.select("name", "position", "sno", "img_data")
+    .from("key_people")
+    .then((row) => {
+      res.send(row);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+app.put("/api/update-key-people", (req, res) => {
+  const { Sno, Name } = req.body;
+
+  db("key_people")
+    .where({
+      sno: Sno,
+    })
+    .update({
+      name: Name,
+    })
+    .then((response) => {
+      res.status(200);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+app.delete("/api/delete-key-people/:sno", (req, res) => {
+  const { sno } = req.params;
+
+  db("key_people")
+    .where({
+      sno: sno,
+    })
+    .del()
+    .then((response) => {
+      res.status(200);
+    })
+    .catch((err) => {
+      res.send(err);
     });
 });
 
