@@ -362,6 +362,189 @@ app.get("/api/uploaded-key-people", (req, res) => {
     });
 });
 
+app.post("/api/complains-count", (req, res) => {
+  const { Id, Count } = req.body;
+
+  db("complains_count")
+    .insert({
+      std_id: Id,
+      count: Count,
+    })
+    .then((response) => {
+      res.send(response);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+app.post("/api/send-reply", (req, res) => {
+  const { Id, Current_date, Current_time, Counter, Subject, Message } =
+    req.body;
+  db("messages")
+    .insert({
+      std_id: Id,
+      reply_date: Current_date,
+      time: Current_time,
+      counter: Counter,
+      subject: Subject,
+      message: Message,
+    })
+    .then((response) => {
+      db("student_complains")
+        .update({
+          status: "Replied",
+        })
+        .where({
+          subject: Subject,
+        })
+        .then((row) => {
+          res.json(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+app.get("/api/get-complains", (req, res) => {
+  db("student_complains")
+    .select("*")
+    .then((response) => res.json(response))
+    .catch((err) => res.json(err));
+});
+
+app.post("/api/get-message-count", (req, res) => {
+  const { Id } = req.body;
+  db("messages")
+    .count("counter")
+    .where({
+      std_id: Id,
+      counter: 1,
+    })
+    .then((row) => {
+      res.json(row);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+app.post("/api/get-messages", (req, res) => {
+  const { Id } = req.body;
+  // db("messages")
+  //   .select("reply_date", "time", "subject", "message")
+  //   .where({ std_id: Id })
+  //   .then((row) => {
+  //     res.json(row);
+  //   })
+  //   .catch((err) => {
+  //     res.json(err);
+  //   });
+
+  db.raw(
+    "select sno,time, subject,message,  TO_CHAR(reply_date, 'Mon dd yyyy') as date from messages where std_id = " +
+      "'" +
+      Id +
+      "'"
+  ).then((row) => res.json(row));
+});
+
+app.get("/api/get-complains-count", (req, res) => {
+  db("complains_count")
+    .count("*")
+    .then((response) => {
+      res.send(response);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+app.put("/api/reset-messages-count", (req, res) => {
+  const { Id } = req.body;
+
+  db("messages")
+    .update({
+      counter: "",
+    })
+    .where({
+      std_id: Id,
+    })
+    .then((row) => {
+      res.json(row);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+app.delete("/api/remove-complains-count", (req, res) => {
+  db("complains_count")
+    .del()
+    .then((response) => {
+      res.status(200);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+app.delete("/api/delete-message/:sno", (req, res) => {
+  const { sno } = req.params;
+
+  db("messages")
+    .del()
+    .where({
+      sno: sno,
+    })
+    .then((row) => {
+      res.json(row);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+app.delete("/api/delete-complain/:sno", (req, res) => {
+  const { sno } = req.params;
+
+  db("student_complains")
+    .del()
+    .where({
+      sno: sno,
+    })
+    .then((row) => {
+      res.json(row);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+app.post("/api/send-complain", (req, res) => {
+  const { Date, Id, Name, Contact, Subject, Complain } = req.body;
+
+  db("student_complains")
+    .insert({
+      date_of_complain: Date,
+      std_id: Id,
+      name: Name,
+      contact: Contact,
+      subject: Subject,
+      complain: Complain,
+    })
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
 app.put("/api/update-key-people", (req, res) => {
   const { Sno, Name } = req.body;
 
