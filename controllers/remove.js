@@ -20,15 +20,15 @@ const handleRemove = (req, res, db) => {
       .catch((err) => res.status(400).json({ dbError: "db error" }));
   } else {
     db("users")
-      .where("level", level.toString())
+      .where({ programme_type: "Degree", level: level.toString() })
       .del()
       .then(() => {
         db("dues")
-          .where("level", level.toString())
+          .where({ programme_type: "Degree", level: level.toString() })
           .del()
-          .then(() => db("souvenirs").where("level", level.toString()).del())
+          .then(() => db("souvenirs").where({ programme_type: "Degree", level: level.toString() }).del())
           .then(() =>
-            db("profile_images").where("level", level.toString()).del()
+            db("profile_images").where({ programme_type: "Degree", level: level.toString() }).del()
           )
           .then(() => {
             res.status(200).json("deleted 2");

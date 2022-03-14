@@ -24,8 +24,11 @@ const courseStats = require("./controllers/courseStats");
 const tshirtStats = require("./controllers/tshirtStats");
 const genderStats = require("./controllers/genderStats");
 const remove = require("./controllers/remove");
+const removeDiploma = require("./controllers/remove-diploma")
 const removeRegister = require("./controllers/remove-register");
+const removeDiplomaRegister = require("./controllers/remove-register-diploma")
 const removeLogin = require("./controllers/remove-login");
+const removeDiplomaLogin = require("./controllers/remove-login-diploma")
 const forgotPassword = require("./controllers/forgot-password");
 const reset = require("./controllers/reset");
 const updatePassword = require("./controllers/changePassword");
@@ -125,6 +128,11 @@ app.delete("/api/remove/:id/:level", (req, res) => {
   remove.handleRemove(req, res, db);
 });
 
+app.delete("/api/remove-diploma/:level", (req, res) => {
+  removeDiploma.handleRemoveDiploma(req, res, db)
+});
+
+
 app.delete("/api/delete-handout/:sno", (req, res) => {
   deleteHandout.handleDeleteHandout(req, res, db);
 });
@@ -137,8 +145,16 @@ app.delete("/api/remove-register/:id/:level", (req, res) => {
   removeRegister.handleRemoveRegister(req, res, db);
 });
 
+app.delete("/api/remove-register-diploma/:level", (req, res) => {
+  removeDiplomaRegister.handleRemoveDiplomaRegister(req, res, db)
+});
+
 app.delete("/api/remove-login/:id/:level", (req, res) => {
   removeLogin.handleRemoveLogin(req, res, db);
+});
+
+app.delete("/api/remove-login-diploma/:level", (req, res) => {
+  removeDiplomaLogin.handleRemoveDiplomaLogin(req, res, db)
 });
 
 app.put("/api/updateProfile", (req, res) => {
@@ -235,13 +251,14 @@ app.post("/api/img", (req, res) => {
 });
 
 app.post("/api/uploadids", (req, res) => {
-  const { IDs, Level } = req.body;
+  const { IDs, Level, ProgrammeType } = req.body;
 
   IDs.forEach((item, index, arr) => {
     db("student_ids")
       .insert({
         std_id: item,
         level: Level,
+        programme: ProgrammeType
       })
       .then((row) => {
         if (index + 1 === arr.length) {
@@ -300,7 +317,7 @@ app.delete("/api/delete-ids/:level", (req, res) => {
   const { level } = req.params;
 
   db("student_ids")
-    .where("level", level)
+    .where({ programme: "Degree", level: level, })
     .del()
     .then((row) => {
       res.send("deleted");
@@ -311,13 +328,29 @@ app.delete("/api/delete-ids/:level", (req, res) => {
     });
 });
 
-app.post("/api/validateid", (req, res) => {
-  const { ID, Level } = req.body;
+
+app.delete("/api/delete-diploma-ids/:level", (req, res) => {
+  const { level } = req.params;
+
   db("student_ids")
-    .select("std_id", "level")
+    .where({ programme: "Diploma", level: level })
+    .del()
+    .then((row) => {
+      res.send("deleted");
+    })
+    .catch((err) => {
+      console.log(err.toString());
+      res.send("error");
+    });
+});
+
+
+app.post("/api/validateid", (req, res) => {
+  const { ID } = req.body;
+  db("student_ids")
+    .select("std_id",)
     .where({
       std_id: ID,
-      level: Level,
     })
     .then((row) => {
       console.log(row);
@@ -447,9 +480,9 @@ app.post("/api/get-messages", (req, res) => {
 
   db.raw(
     "select sno,time, subject,message,  TO_CHAR(reply_date, 'Mon dd yyyy') as date from messages where std_id = " +
-      "'" +
-      Id +
-      "'"
+    "'" +
+    Id +
+    "'"
   ).then((row) => res.json(row));
 });
 
@@ -469,7 +502,7 @@ app.put("/api/reset-messages-count", (req, res) => {
 
   db("messages")
     .update({
-      counter: "",
+      counter: 0,
     })
     .where({
       std_id: Id,
@@ -580,7 +613,8 @@ app.delete("/api/delete-key-people/:sno", (req, res) => {
 });
 
 app.post("/api/create-registration", (req, res) => {
-  const { FirstName, MiddleName, LastName, StudentID, Level, Gender } =
+  const { FirstName, MiddleName, LastName, StudentID, Level, Gender, ProgrammeType
+  } =
     req.body;
 
   db("registration")
@@ -589,6 +623,7 @@ app.post("/api/create-registration", (req, res) => {
       middle_name: MiddleName,
       last_name: LastName,
       gender: Gender,
+      programme_type: ProgrammeType,
       std_id: StudentID.toUpperCase(),
       level: Level,
     })
@@ -596,5 +631,6 @@ app.post("/api/create-registration", (req, res) => {
       console.log(res);
     });
 });
+
 
 app.listen(process.env.PORT || 3000);

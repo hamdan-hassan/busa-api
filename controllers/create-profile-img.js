@@ -5,6 +5,7 @@ const handleProfileImage = (req, res, db) => {
     .insert({
       std_id: StudentID.toUpperCase(),
       level: Level,
+      programme_type: ProgrammeType
     })
     .then((res) => {
       console.log(res);

@@ -10,18 +10,6 @@ const handleArticle = (req, res, db) => {
       res.json(err);
     });
 
-  // db("articles")
-  //   .update({
-  //     title: Title,
-  //     content: Content,
-  //     upload_date: CURRENT_DATE,
-  //   })
-  //   .then((row) => {
-  //     res.json(row);
-  //   })
-  //   .catch((err) => {
-  //     res.json(err);
-  //   });
 };
 
 module.exports = {

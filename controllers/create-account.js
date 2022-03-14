@@ -8,6 +8,7 @@ const handleCreateAccount = (req, res, db, bcrypt) => {
     Gender,
     Level,
     Programme,
+    ProgrammeType,
     PhoneNumber,
     Email,
     Password,
@@ -17,6 +18,11 @@ const handleCreateAccount = (req, res, db, bcrypt) => {
   const hash = bcrypt.hashSync(Password, saltRounds);
 
   db.transaction((trx) => {
+
+    if (Email === 'info.busa99@gmail.com') {
+      res.send("already exist")
+    }
+
     db.raw(
       `select std_id, email from users where std_id = '${StudentID}' or email = '${Email}'`
     )
@@ -31,6 +37,7 @@ const handleCreateAccount = (req, res, db, bcrypt) => {
               email: Email,
               std_id: StudentID.toUpperCase(),
               level: Level,
+              programme_type: ProgrammeType
             })
             .into("login")
             .returning("email")
@@ -44,6 +51,7 @@ const handleCreateAccount = (req, res, db, bcrypt) => {
                   std_id: StudentID.toUpperCase(),
                   dob: DateOfBirth,
                   gender: Gender,
+                  programme_type: ProgrammeType,
                   programme: Programme,
                   phone_number: PhoneNumber,
                   email: loginEmail[0],
@@ -56,16 +64,18 @@ const handleCreateAccount = (req, res, db, bcrypt) => {
                     .insert({
                       std_id: dueId[0].toUpperCase(),
                       level: Level,
+                      programme_type: ProgrammeType,
                       level_100: "Pending",
                       level_200: "Pending",
                       level_300: "Pending",
                       level_400: "Pending",
                     })
                     .returning("std_id")
-                    .then((souvernirId) => {
+                    .then((souvenirId) => {
                       return trx("souvenirs").returning("*").insert({
-                        std_id: souvernirId[0].toUpperCase(),
+                        std_id: souvenirId[0].toUpperCase(),
                         level: Level,
+                        programme_type: ProgrammeType,
                         t_shirt: "Pending",
                         books: "Pending",
                       });

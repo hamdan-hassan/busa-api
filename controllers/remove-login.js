@@ -10,7 +10,7 @@ const handleRemoveLogin = (req, res, db) => {
       .catch((err) => res.status(400).json({ dbError: "db error" }));
   } else {
     db("login")
-      .where("level", level.toString())
+      .where({ programme_type: "Degree", level: level.toString() })
       .del()
       .then(() => {
         res.status(200).json("deleted 2");
