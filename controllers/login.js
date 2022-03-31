@@ -7,10 +7,45 @@ const handleLogin = (req, res, db, bcrypt) => {
         return res.json("not found");
       }
       bcrypt.compare(req.body.password, data[0].hash, function (err, response) {
-        if (response && data[0].role === "Admin") {
-          res.send({
-            role: "admin",
-          });
+        if (response && data[0].role !== "User") {
+          // res.send({
+          //   role: "admin",
+          // });
+
+          switch (data[0].role) {
+            case 'Admin':
+              res.send({
+                role: "admin",
+              });
+              break;
+
+            case 'Marketing HOD':
+              res.send({
+                role: "marketing",
+              });
+              break;
+
+            case 'Management HOD':
+              res.send({
+                role: "management",
+              });
+              break;
+
+            case 'Banking and Finance HOD':
+              res.send({
+                role: "banking and finance",
+              });
+              break;
+
+            case 'Accountancy HOD':
+              res.send({
+                role: "accountancy",
+              });
+              break;
+
+
+          }
+
         } else if (response && data[0].role !== "Admin") {
           return db
             .select(

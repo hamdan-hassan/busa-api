@@ -396,12 +396,13 @@ app.get("/api/uploaded-key-people", (req, res) => {
 });
 
 app.post("/api/complains-count", (req, res) => {
-  const { Id, Count } = req.body;
+  const { Id, Count, Receiver } = req.body;
 
   db("complains_count")
     .insert({
       std_id: Id,
       count: Count,
+      receiver: Receiver
     })
     .then((response) => {
       res.send(response);
@@ -443,11 +444,59 @@ app.post("/api/send-reply", (req, res) => {
     });
 });
 
-app.get("/api/get-complains", (req, res) => {
-  db("student_complains")
-    .select("*")
-    .then((response) => res.json(response))
-    .catch((err) => res.json(err));
+app.post("/api/get-complains", (req, res) => {
+  const { Receiver } = req.body
+  console.log(Receiver)
+
+  switch (Receiver) {
+    case 'admin':
+      db("student_complains")
+        .select("*")
+        .where({
+          receiver: "Busa"
+        })
+        .then((response) => res.json(response))
+        .catch((err) => res.json(err));
+      break;
+    case 'marketing':
+      db("student_complains")
+        .select("*")
+        .where({
+          receiver: "Department of Procurement and Marketing"
+        })
+        .then((response) => res.json(response))
+        .catch((err) => res.json(err));
+      break;
+    case 'management':
+      db("student_complains")
+        .select("*")
+        .where({
+          receiver: "Department of Management Studies"
+        })
+        .then((response) => res.json(response))
+        .catch((err) => res.json(err));
+      break;
+    case 'banking and finance':
+      db("student_complains")
+        .select("*")
+        .where({
+          receiver: "Department of Banking and Finance"
+        })
+        .then((response) => res.json(response))
+        .catch((err) => res.json(err));
+      break;
+    case 'accountancy':
+      db("student_complains")
+        .select("*")
+        .where({
+          receiver: "Department of Accountancy"
+        })
+        .then((response) => res.json(response))
+        .catch((err) => res.json(err));
+      break;
+  }
+
+
 });
 
 app.post("/api/get-message-count", (req, res) => {
@@ -486,9 +535,14 @@ app.post("/api/get-messages", (req, res) => {
   ).then((row) => res.json(row));
 });
 
-app.get("/api/get-complains-count", (req, res) => {
+app.post("/api/get-complains-count", (req, res) => {
+
+  const { Receiver } = req.body
+
+  console.log(Receiver)
   db("complains_count")
     .count("*")
+    .where({ receiver: Receiver })
     .then((response) => {
       res.send(response);
     })
@@ -515,9 +569,16 @@ app.put("/api/reset-messages-count", (req, res) => {
     });
 });
 
-app.delete("/api/remove-complains-count", (req, res) => {
+app.delete("/api/remove-complains-count/:receiver", (req, res) => {
+
+  const { receiver } = req.params
+
+
+  console.log(receiver)
+
   db("complains_count")
     .del()
+    .where({ receiver: receiver })
     .then((response) => {
       res.status(200);
     })
@@ -542,24 +603,42 @@ app.delete("/api/delete-message/:sno", (req, res) => {
     });
 });
 
-app.delete("/api/delete-complain/:sno", (req, res) => {
-  const { sno } = req.params;
+app.delete("/api/delete-complain/:id/:sno", (req, res) => {
+  const { id, sno } = req.params;
 
-  db("student_complains")
-    .del()
-    .where({
-      sno: sno,
-    })
-    .then((row) => {
-      res.json(row);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
+  if (sno === "null") {
+    db("student_complains")
+      .del()
+      .where({
+        std_id: id,
+      })
+      .then((row) => {
+        res.json(row);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  }
+
+  else {
+    db("student_complains")
+      .del()
+      .where({
+        sno: sno,
+      })
+      .then((row) => {
+        res.json(row);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  }
+
+
 });
 
 app.post("/api/send-complain", (req, res) => {
-  const { Date, Id, Name, Contact, Subject, Complain } = req.body;
+  const { Date, Id, Name, Contact, Subject, Complain, Receiver } = req.body;
 
   db("student_complains")
     .insert({
@@ -569,6 +648,7 @@ app.post("/api/send-complain", (req, res) => {
       contact: Contact,
       subject: Subject,
       complain: Complain,
+      receiver: Receiver
     })
     .then((response) => {
       res.json(response);
@@ -631,6 +711,9 @@ app.post("/api/create-registration", (req, res) => {
       console.log(res);
     });
 });
+
+// const hash = bcrypt.hashSync("da0021", 10)
+// console.log(hash)
 
 
 app.listen(process.env.PORT || 3000);
