@@ -6,6 +6,8 @@ const handleGenderStats = (req, res, db) => {
     .where("gender", "Male")
     .then((data) => {
       arr.push(data[0]);
+    }).catch(err => {
+      res.json(err)
     });
 
   db("registration")
@@ -14,7 +16,10 @@ const handleGenderStats = (req, res, db) => {
     .then((data) => {
       arr.push(data[0]);
       res.json(arr);
+    }).catch(err => {
+      res.json(err)
     });
+  ;
 };
 
 module.exports = {

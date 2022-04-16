@@ -1,5 +1,5 @@
 const handleProfileImage = (req, res, db) => {
-  const { StudentID, Level } = req.body;
+  const { StudentID, Level, ProgrammeType } = req.body;
 
   db("profile_images")
     .insert({
@@ -7,8 +7,10 @@ const handleProfileImage = (req, res, db) => {
       level: Level,
       programme_type: ProgrammeType
     })
-    .then((res) => {
-      console.log(res);
+    .then((row) => {
+      res.json(row)
+    }).catch(err => {
+      res.json(err)
     });
 };
 

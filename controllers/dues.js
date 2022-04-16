@@ -5,6 +5,8 @@ const handleDues = (req, res, db) => {
     .where({ std_id: id })
     .then((row) => {
       res.json(row);
+    }).catch(err => {
+      res.json(err)
     });
 };
 

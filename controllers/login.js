@@ -75,7 +75,7 @@ const handleLogin = (req, res, db, bcrypt) => {
       // console.log(data[0].role);
     })
     .catch((err) => {
-      console.log(err);
+      res.json(err)
     });
 };
 

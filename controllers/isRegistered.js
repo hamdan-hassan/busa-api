@@ -5,6 +5,8 @@ const handleIsRegistered = (req, res, db) => {
     .where({ std_id: id.toUpperCase() })
     .then((row) => {
       res.json(row);
+    }).catch(err => {
+      res.json(err)
     });
 };
 

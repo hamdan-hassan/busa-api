@@ -24,11 +24,11 @@ const handleForgotPassword = (req, res, db, jwt, nodemailer) => {
       if (response.length) {
         std_id = response[0].std_id;
       } else {
-        console.log("error");
+        res.json("error");
       }
     })
     .catch((err) => {
-      console.log(err);
+      res.json(err);
     });
 
   db("users")

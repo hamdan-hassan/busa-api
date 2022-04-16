@@ -27,7 +27,7 @@ const handleRegister = (req, res, db) => {
       })
       .then((res) => {
         console.log(res);
-      });
+      }).catch(err => res.json(err));
   }
 
   if (!isValid) {
