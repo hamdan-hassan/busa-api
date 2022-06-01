@@ -8,7 +8,6 @@ const hanldeUpdateProfile = (req, res, db) => {
     phone,
     dob,
     gender,
-    level,
   } = req.body;
 
   db("users")
@@ -21,7 +20,6 @@ const hanldeUpdateProfile = (req, res, db) => {
       phone_number: phone,
       dob: dob,
       gender: gender,
-      level: level,
     })
 
     .then((row) => {

@@ -1,35 +1,29 @@
-const handleUpdate = (req, res, db) => {
-  const { stdid, level, level100, level200, level300, level400, tshirt, books } =
+const handleUpdateDiplomaLevels = (req, res, db) => {
+  const { fromlevel, tolevel } =
     req.body;
   db.transaction((trx) => {
     return db("dues")
-      .where({ std_id: stdid })
+      .where({ level: fromlevel,programme_type: "Diploma" })
       .update({
-        level: level,
-        level_100: level100,
-        level_200: level200,
-        level_300: level300,
-        level_400: level400,
+        level: tolevel,
       })
 
       .then(() => {
         return db("souvenirs")
           .where({
-            std_id: stdid,
+            level: fromlevel,programme_type: "Diploma" 
           })
           .update({
-            level: level,
-            t_shirt: tshirt,
-            books: books,
+            level: tolevel,
           });
       })
       .then(() => {
         return db("users")
           .where({
-            std_id: stdid,
+            level: fromlevel,programme_type: "Diploma" 
           })
           .update({
-            level: level,
+            level: tolevel,
 
           });
 
@@ -37,39 +31,39 @@ const handleUpdate = (req, res, db) => {
       .then(() => {
         return db("login")
           .where({
-            std_id: stdid,
+            level: fromlevel,programme_type: "Diploma"
           })
           .update({
-            level: level,
+            level: tolevel,
 
           });
       })
       .then(() => {
         return db("registration")
           .where({
-            std_id: stdid,
+             level: fromlevel,programme_type: "Diploma"
           })
           .update({
-            level: level,
+            level: tolevel,
 
           });
       })
       .then(() => {
         return db("profile_images")
           .where({
-            std_id: stdid,
+            level: fromlevel,programme_type: "Diploma"
           })
           .update({
-            level: level,
+            level: tolevel,
 
           });
       })
-      .then((row) => res.status(200))
+      .then((row) => res.json("ok"))
       .then(trx.commit)
       .catch((err) => res.status(400));
   });
 };
 
 module.exports = {
-  handleUpdate: handleUpdate,
+  handleUpdateDiplomaLevels: handleUpdateDiplomaLevels,
 };

@@ -65,10 +65,10 @@ const handleCreateAccount = (req, res, db, bcrypt) => {
                       std_id: dueId[0].toUpperCase(),
                       level: Level,
                       programme_type: ProgrammeType,
-                      level_100: "Pending",
-                      level_200: "Pending",
-                      level_300: "Pending",
-                      level_400: "Pending",
+                      level_100: 0,
+                      level_200: 0,
+                      level_300: 0,
+                      level_400: 0,
                     })
                     .returning("std_id")
                     .then((souvenirId) => {
@@ -76,8 +76,8 @@ const handleCreateAccount = (req, res, db, bcrypt) => {
                         std_id: souvenirId[0].toUpperCase(),
                         level: Level,
                         programme_type: ProgrammeType,
-                        t_shirt: "Pending",
-                        books: "Pending",
+                        t_shirt: 0,
+                        books: 0,
                       });
                     });
                 })

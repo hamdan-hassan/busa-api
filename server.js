@@ -39,6 +39,8 @@ const uploadPastQuestions = require("./controllers/uploadPastQuestions");
 const uploadedPastQuestion = require("./controllers/uploadedPastQuestions");
 const deletePastQuestions = require("./controllers/deletePastQuestion");
 const getHandouts = require("./controllers/getHandouts");
+const updateDegreeLevels = require("./controllers/updateDegreeLevels")
+const updateDiplomaLevels = require("./controllers/updateDiplomaLevels")
 const getPastQuestions = require("./controllers/getPastQuestions");
 const profileImage = require("./controllers/create-profile-img");
 const { response } = require("express");
@@ -107,6 +109,16 @@ app.post("/api/create-account", (req, res) => {
 app.get("/api/uploaded-handouts", (req, res) => {
   uploadedHandouts.handleUploadedHandouts(req, res, db);
 });
+
+app.put("/api/update-degree-levels", (req,res) => {
+
+  updateDegreeLevels.handleUpdateDegreeLevels(req, res, db);
+})
+
+app.put("/api/update-diploma-levels", (req,res) => {
+
+  updateDiplomaLevels.handleUpdateDiplomaLevels(req, res, db);
+})
 
 app.post("/api/get-handouts", (req, res) => {
   getHandouts.handleGetHandouts(req, res, db);
@@ -262,11 +274,13 @@ app.post("/api/uploadids", (req, res) => {
       })
       .then((row) => {
         if (index + 1 === arr.length) {
+
           res.send("success");
         }
       })
       .catch((err) => {
         if (index + 1 === arr.length) {
+          console.log(item)
           res.send("error");
         }
       });
@@ -346,11 +360,12 @@ app.delete("/api/delete-diploma-ids/:level", (req, res) => {
 
 
 app.post("/api/validateid", (req, res) => {
-  const { ID } = req.body;
+  const { ID, Level } = req.body;
   db("student_ids")
-    .select("std_id",)
+    .select("std_id", "level")
     .where({
       std_id: ID,
+      level: Level,
     })
     .then((row) => {
       console.log(row);
