@@ -5,7 +5,6 @@ const handleGetPastQuestions = (req, res, db) => {
     `select trimester,url,doc,course_name from past_questions where programme = '${Programme}' and level = '${Level}' and trimester = '${Trimester}'`
   )
     .then((row) => {
-      console.log(row);
       res.send(row);
     })
     .catch((err) => {

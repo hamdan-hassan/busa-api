@@ -23,14 +23,12 @@ const handleReset = (req, res, db, bcrypt, jwt) => {
               res.send("success");
             })
             .catch((err) => {
-              console.log(err);
+              res.json(err)
             });
         } else {
-          console.log("ooppps");
           res.status(400);
         }
       } else {
-        console.log("error");
         res.send("expired");
       }
     })

@@ -26,7 +26,6 @@ const handleRegister = (req, res, db) => {
         std_id: StudentID.toUpperCase(),
       })
       .then((res) => {
-        console.log(res);
       }).catch(err => res.json(err));
   }
 

@@ -72,7 +72,7 @@ const handleLogin = (req, res, db, bcrypt) => {
           res.status(400).json("ooops");
         }
       });
-      // console.log(data[0].role);
+
     })
     .catch((err) => {
       res.json(err)

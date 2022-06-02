@@ -245,7 +245,7 @@ app.put("/api/upload", (req, res) => {
       res.json(row);
     })
     .catch((err) => {
-      console.log(err);
+      res.json(err)
     });
 });
 
@@ -258,7 +258,7 @@ app.post("/api/img", (req, res) => {
       res.json(row);
     })
     .catch((err) => {
-      console.log(err);
+      res.json(err)
     });
 });
 
@@ -280,7 +280,6 @@ app.post("/api/uploadids", (req, res) => {
       })
       .catch((err) => {
         if (index + 1 === arr.length) {
-          console.log(item)
           res.send("error");
         }
       });
@@ -309,7 +308,7 @@ app.put("/api/remove-img", (req, res) => {
       res.json(row);
     })
     .catch((err) => {
-      console.log(err);
+     res.json(err)
     });
 });
 
@@ -337,7 +336,6 @@ app.delete("/api/delete-ids/:level", (req, res) => {
       res.send("deleted");
     })
     .catch((err) => {
-      console.log(err.toString());
       res.send("error");
     });
 });
@@ -353,7 +351,6 @@ app.delete("/api/delete-diploma-ids/:level", (req, res) => {
       res.send("deleted");
     })
     .catch((err) => {
-      console.log(err.toString());
       res.send("error");
     });
 });
@@ -368,7 +365,6 @@ app.post("/api/validateid", (req, res) => {
       level: Level,
     })
     .then((row) => {
-      console.log(row);
 
       if (row.length) {
         res.json("true");
@@ -377,7 +373,6 @@ app.post("/api/validateid", (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
       res.json(err);
     });
 });
@@ -451,7 +446,7 @@ app.post("/api/send-reply", (req, res) => {
           res.json(response);
         })
         .catch((err) => {
-          console.log(err);
+         res.json(err)
         });
     })
     .catch((err) => {
@@ -461,7 +456,6 @@ app.post("/api/send-reply", (req, res) => {
 
 app.post("/api/get-complains", (req, res) => {
   const { Receiver } = req.body
-  console.log(Receiver)
 
   switch (Receiver) {
     case 'admin':
@@ -554,7 +548,7 @@ app.post("/api/get-complains-count", (req, res) => {
 
   const { Receiver } = req.body
 
-  console.log(Receiver)
+  
   db("complains_count")
     .count("*")
     .where({ receiver: Receiver })
@@ -589,7 +583,6 @@ app.delete("/api/remove-complains-count/:receiver", (req, res) => {
   const { receiver } = req.params
 
 
-  console.log(receiver)
 
   db("complains_count")
     .del()
@@ -703,7 +696,7 @@ app.delete("/api/delete-key-people/:sno", (req, res) => {
       res.status(200);
     })
     .catch((err) => {
-      res.send(err);
+      res.json(err);
     });
 });
 
@@ -722,13 +715,9 @@ app.post("/api/create-registration", (req, res) => {
       std_id: StudentID.toUpperCase(),
       level: Level,
     })
-    .then((res) => {
-      console.log(res);
+    .then((row) => {
+      res.json(row)
     });
 });
-
-// const hash = bcrypt.hashSync("da0021", 10)
-// console.log(hash)
-
 
 app.listen(process.env.PORT || 3000);

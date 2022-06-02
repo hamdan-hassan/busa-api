@@ -55,7 +55,7 @@ const handleForgotPassword = (req, res, db, jwt, nodemailer) => {
           res.json(row);
         })
         .catch((err) => {
-          console.log(err);
+          res.json(err)
         });
       const link = `http://localhost:3001/reset/${std_id}/${token}`;
       // res.send(link);
