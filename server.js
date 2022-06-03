@@ -268,7 +268,7 @@ app.post("/api/uploadids", (req, res) => {
   IDs.forEach((item, index, arr) => {
     db("student_ids")
       .insert({
-        std_id: item,
+        std_id: item.trim(),
         level: Level,
         programme: ProgrammeType
       })
@@ -526,16 +526,7 @@ app.post("/api/get-message-count", (req, res) => {
 
 app.post("/api/get-messages", (req, res) => {
   const { Id } = req.body;
-  // db("messages")
-  //   .select("reply_date", "time", "subject", "message")
-  //   .where({ std_id: Id })
-  //   .then((row) => {
-  //     res.json(row);
-  //   })
-  //   .catch((err) => {
-  //     res.json(err);
-  //   });
-
+  
   db.raw(
     "select sno,time, subject,message,  TO_CHAR(reply_date, 'Mon dd yyyy') as date from messages where std_id = " +
     "'" +

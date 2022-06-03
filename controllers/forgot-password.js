@@ -57,7 +57,7 @@ const handleForgotPassword = (req, res, db, jwt, nodemailer) => {
         .catch((err) => {
           res.json(err)
         });
-      const link = `http://localhost:3001/reset/${std_id}/${token}`;
+      const link = process.env.NODE_ENV === "production" ? `/reset/${std_id}/${token}` : `http://localhost:3001/reset/${std_id}/${token}`;
       // res.send(link);
 
       const transporter = nodemailer.createTransport({
@@ -73,7 +73,7 @@ const handleForgotPassword = (req, res, db, jwt, nodemailer) => {
         from: process.env.FROM_EMAIL,
         to: email,
         subject: "Reset Password",
-        text: `Reset your password with the following link. http://localhost:3001/reset/${std_id}/${token} Please note the link will expire in 30 minutes.`,
+        text: `Reset your password with the following link. ${link} Please note the link will expire in 30 minutes.`,
         html: `
         <p>Heard that you forgot your password. Sorry about that. Click this <a href="${link}"'>Link</a> to reset your password. The link will expire in 30 minutes</p>
         
