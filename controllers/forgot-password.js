@@ -57,7 +57,7 @@ const handleForgotPassword = (req, res, db, jwt, nodemailer) => {
         .catch((err) => {
           res.json(err)
         });
-      const link = process.env.NODE_ENV === "production" ? `/reset/${std_id}/${token}` : `http://localhost:3001/reset/${std_id}/${token}`;
+      const link = process.env.NODE_ENV === "production" ? `https://sobbusa.com/reset/${std_id}/${token}` : `http://localhost:3001/reset/${std_id}/${token}`;
       // res.send(link);
 
       const transporter = nodemailer.createTransport({
