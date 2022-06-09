@@ -9,8 +9,8 @@ require("dotenv").config();
 
 const createAccount = require("./controllers/create-account");
 const register = require("./controllers/register");
-const article = require("./controllers/article");
-const getArticle = require("./controllers/getArticle");
+const uploadArticle = require("./controllers/uploadarticle");
+const getArticles = require("./controllers/getArticles");
 const login = require("./controllers/login");
 const isRegistered = require("./controllers/isRegistered");
 const profile = require("./controllers/profile");
@@ -98,8 +98,8 @@ app.post("/api/reset/:id/:pass/:token", (req, res) => {
   reset.handleReset(req, res, db, bcrypt, jwt);
 });
 
-app.get("/api/getArticle", (req, res) => {
-  getArticle.handleGetArticle(req, res, db);
+app.get("/api/getArticles", (req, res) => {
+  getArticles.handleGetArticles(req, res, db);
 });
 
 app.post("/api/create-account", (req, res) => {
@@ -185,8 +185,8 @@ app.post("/api/create-profile-img", (req, res) => {
   profileImage.handleProfileImage(req, res, db);
 });
 
-app.put("/api/article", (req, res) => {
-  article.handleArticle(req, res, db);
+app.post("/api/publish-article", (req, res) => {
+  uploadArticle.handleUploadArticle(req, res, db);
 });
 
 app.get("/api/courseStats", (req, res) => {
@@ -404,6 +404,77 @@ app.get("/api/uploaded-key-people", (req, res) => {
       res.send(err);
     });
 });
+
+app.get("/api/uploaded-articles", (req, res) => {
+  db.select("*")
+    .from("articles")
+    .then((row) => {
+      res.send(row);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+app.delete("/api/delete-article/:article_id", (req, res) => {
+
+  const { article_id } = req.params
+
+
+
+  db("articles")
+    .del()
+    .where({ article_id: article_id })
+    .then((response) => {
+      res.status(200);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+
+app.put("/api/update-article", (req, res) => {
+  const { article_id,title,content } = req.body;
+
+  db("articles")
+    .update({
+      title: title,
+      content: content
+    })
+    .where({
+      article_id: article_id,
+    })
+    .then((row) => {
+      res.json("updated");
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+// app.get("/api/count-articles",(req,res) => {
+//  db("articles")
+//     .count("*")
+//     .then((data) => {
+//       res.json(data);
+//     })
+//     .catch((err) => {
+//       res.status(400).json(err);
+//     });
+// })
+
+app.get("/api/get-article/:id", (req, res) => {
+  const { id} = req.params;
+
+db.raw(
+    `select title, content,article_id,  TO_CHAR(upload_date, 'Mon dd, yyyy') as date from articles where article_id='${id}'`
+  ).then((row) => res.json(row)).catch(err => {
+    res.json(err)
+  });
+ 
+});
+
 
 app.post("/api/complains-count", (req, res) => {
   const { Id, Count, Receiver } = req.body;
