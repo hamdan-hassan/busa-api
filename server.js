@@ -776,6 +776,7 @@ app.post("/api/create-registration", (req, res) => {
       programme_type: ProgrammeType,
       std_id: StudentID.toUpperCase(),
       level: Level,
+      status: "❌"
     })
     .then((row) => {
       res.json(row)

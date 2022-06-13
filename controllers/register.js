@@ -21,6 +21,7 @@ const handleRegister = (req, res, db) => {
         size: Size,
         level: Level,
         registered: "true",
+        status: "✅"
       })
       .where({
         std_id: StudentID.toUpperCase(),

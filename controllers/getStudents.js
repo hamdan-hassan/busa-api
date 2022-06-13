@@ -11,6 +11,7 @@ const handleGetStudents = (req, res, db) => {
     "t_shirt",
     "books",
     "email",
+    "status",
     "registered",
     "phone_number"
   )
