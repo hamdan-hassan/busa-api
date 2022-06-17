@@ -15,9 +15,13 @@ const handleCreateAccount = (req, res, db, bcrypt) => {
   } = req.body;
 
   const saltRounds = 10;
-  const hash = bcrypt.hashSync(Password, saltRounds);
+  
 
-  db.transaction((trx) => {
+bcrypt.genSalt(saltRounds, function(err, salt) {
+    bcrypt.hash(Password, salt, function(err, hash) {
+        
+
+        db.transaction((trx) => {
 
     if (Email === 'info.busa99@gmail.com') {
       res.send("already exist")
@@ -94,6 +98,11 @@ const handleCreateAccount = (req, res, db, bcrypt) => {
   }).catch((err) => {
     res.json(err)
   });
+    });
+});
+
+
+  
 };
 
 module.exports = {
