@@ -4,34 +4,43 @@ const handleTshirtStats = (req, res, db) => {
     .count("*")
     .where({ size: "Small" })
     .where({ registered: "true" })
+    .where({ level: 100 })
     .then((data) => {
       arr.push(data[0]);
     });
 
   db("registration")
     .count("*")
-    .where("size", "Medium")
+    .where({size: "Medium"})
+    .where({ registered: "true" })
+    .where({ level: 100 })
     .then((data) => {
       arr.push(data[0]);
     });
 
   db("registration")
     .count("*")
-    .where("size", "Large")
+    .where({size: "Large"})
+    .where({ registered: "true" })
+    .where({ level: 100 })
     .then((data) => {
       arr.push(data[0]);
     });
 
   db("registration")
     .count("*")
-    .where("size", "X-Large")
+    .where({size: "X-Large"})
+    .where({ registered: "true" })
+    .where({ level: 100 })
     .then((data) => {
       arr.push(data[0]);
     });
 
   db("registration")
     .count("*")
-    .where("size", "XX-Large")
+    .where({size: "XX-Large"})
+    .where({ registered: "true" })
+    .where({ level: 100 })
     .then((data) => {
       arr.push(data[0]);
       res.json(arr);
