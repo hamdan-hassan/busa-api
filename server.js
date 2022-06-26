@@ -268,7 +268,7 @@ app.post("/api/uploadids", (req, res) => {
   IDs.forEach((item, index, arr) => {
     db("student_ids")
       .insert({
-        std_id: item.trim(),
+        std_id: item.trim().toUpperCase(),
         level: Level,
         programme: ProgrammeType
       })
