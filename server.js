@@ -312,8 +312,9 @@ app.put("/api/remove-img", (req, res) => {
     });
 });
 
-app.delete("/api/delete-id/:id", (req, res) => {
-  const { id } = req.params;
+app.delete("/api/delete-id", (req, res) => {
+  const { id } = req.body;
+ 
 
   db("student_ids")
     .where("std_id", id)
