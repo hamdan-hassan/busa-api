@@ -72,7 +72,7 @@ const handleCourseStats = (req, res, db) => {
 
   db("users")
     .count("*")
-    .where("programme", "BA Integreated Business Studies (Accounting)")
+    .where("programme", "BA Integrated Business Studies (Accounting)")
     .then((data) => {
       arr.push(data[0]);
     })
@@ -82,7 +82,7 @@ const handleCourseStats = (req, res, db) => {
 
  db("users")
     .count("*")
-    .where("programme", "BA Integreated Business Studies (Management)")
+    .where("programme", "BA Integrated Business Studies (Management)")
     .then((data) => {
       arr.push(data[0]);
     })
