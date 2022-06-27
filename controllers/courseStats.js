@@ -40,6 +40,16 @@ const handleCourseStats = (req, res, db) => {
       res.json(err);
     });
 
+     db("users")
+    .count("*")
+    .where("programme", "BCom(Procurement and Supply Chain Management)")
+    .then((data) => {
+      arr.push(data[0]);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+
   db("users")
     .count("*")
     .where("programme", "Bsc Accounting")
@@ -62,7 +72,7 @@ const handleCourseStats = (req, res, db) => {
 
   db("users")
     .count("*")
-    .where("programme", "BA Integreated Business Studies")
+    .where("programme", "BA Integreated Business Studies (Accounting)")
     .then((data) => {
       arr.push(data[0]);
     })
@@ -70,9 +80,9 @@ const handleCourseStats = (req, res, db) => {
       res.json(err);
     });
 
-  db("users")
+ db("users")
     .count("*")
-    .where("programme", "BA Accounting")
+    .where("programme", "BA Integreated Business Studies (Management)")
     .then((data) => {
       arr.push(data[0]);
     })
@@ -92,7 +102,7 @@ const handleCourseStats = (req, res, db) => {
 
   db("users")
     .count("*")
-    .where("programme", "Diploma Integrated Business Studies")
+    .where("programme", "Diploma in Business Studies")
     .then((data) => {
       arr.push(data[0]);
       res.json(arr);
