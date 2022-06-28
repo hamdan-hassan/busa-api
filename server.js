@@ -66,15 +66,15 @@ app.post("/api/login", (req, res) => {
   login.handleLogin(req, res, db, bcrypt);
 });
 
-app.get("/api/isRegistered/:id", (req, res) => {
+app.post("/api/isRegistered", (req, res) => {
   isRegistered.handleIsRegistered(req, res, db);
 });
 
-app.get("/api/dues/:id", (req, res) => {
+app.post("/api/dues", (req, res) => {
   dues.handleDues(req, res, db);
 });
 
-app.get("/api/souvenirs/:id", (req, res) => {
+app.post("/api/souvenirs", (req, res) => {
   souvenirs.handleSouvenirs(req, res, db);
 });
 
@@ -229,7 +229,7 @@ app.get("/api/totalStduents", (req, res) => {
   totalStduents.handleTotalStudents(req, res, db);
 });
 
-app.get("/api/profile/:id", (req, res) => {
+app.post("/api/profile", (req, res) => {
   profile.handleProfile(req, res, db);
 });
 

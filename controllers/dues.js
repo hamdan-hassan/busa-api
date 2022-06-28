@@ -1,8 +1,8 @@
 const handleDues = (req, res, db) => {
-  const { id } = req.params;
+  const { StudentID} = req.body;
   db("dues")
     .select("*")
-    .where({ std_id: id })
+    .where({ std_id: StudentID })
     .then((row) => {
       res.json(row);
     }).catch(err => {

@@ -1,8 +1,8 @@
 const handleIsRegistered = (req, res, db) => {
-  const { id } = req.params;
+  const { StudentID } = req.body;
   db("registration")
     .select("registered", "first_name","last_name")
-    .where({ std_id: id.toUpperCase() })
+    .where({ std_id: StudentID.toUpperCase() })
     .then((row) => {
       res.json(row);
     }).catch(err => {

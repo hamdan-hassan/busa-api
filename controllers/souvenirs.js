@@ -1,8 +1,8 @@
 const handleSouvenirs = (req, res, db) => {
-  const { id } = req.params;
+  const { StudentID } = req.body;
   db("souvenirs")
     .select("*")
-    .where({ std_id: id.toUpperCase() })
+    .where({ std_id: StudentID.toUpperCase() })
     .then((row) => {
       res.json(row);
     }).catch(err => res.json(err));
