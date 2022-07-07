@@ -24,11 +24,11 @@ const courseStats = require("./controllers/courseStats");
 const tshirtStats = require("./controllers/tshirtStats");
 const genderStats = require("./controllers/genderStats");
 const remove = require("./controllers/remove");
-const removeDiploma = require("./controllers/remove-diploma")
+const removeDiploma = require("./controllers/remove-diploma");
 const removeRegister = require("./controllers/remove-register");
-const removeDiplomaRegister = require("./controllers/remove-register-diploma")
+const removeDiplomaRegister = require("./controllers/remove-register-diploma");
 const removeLogin = require("./controllers/remove-login");
-const removeDiplomaLogin = require("./controllers/remove-login-diploma")
+const removeDiplomaLogin = require("./controllers/remove-login-diploma");
 const forgotPassword = require("./controllers/forgot-password");
 const reset = require("./controllers/reset");
 const updatePassword = require("./controllers/changePassword");
@@ -39,8 +39,8 @@ const uploadPastQuestions = require("./controllers/uploadPastQuestions");
 const uploadedPastQuestion = require("./controllers/uploadedPastQuestions");
 const deletePastQuestions = require("./controllers/deletePastQuestion");
 const getHandouts = require("./controllers/getHandouts");
-const updateDegreeLevels = require("./controllers/updateDegreeLevels")
-const updateDiplomaLevels = require("./controllers/updateDiplomaLevels")
+const updateDegreeLevels = require("./controllers/updateDegreeLevels");
+const updateDiplomaLevels = require("./controllers/updateDiplomaLevels");
 const getPastQuestions = require("./controllers/getPastQuestions");
 const profileImage = require("./controllers/create-profile-img");
 const { response } = require("express");
@@ -59,6 +59,13 @@ const db = knex({
 const app = express();
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+    parameterLimit: 50000,
+  })
+);
 app.use(cors());
 
 //login api
@@ -110,15 +117,13 @@ app.get("/api/uploaded-handouts", (req, res) => {
   uploadedHandouts.handleUploadedHandouts(req, res, db);
 });
 
-app.put("/api/update-degree-levels", (req,res) => {
-
+app.put("/api/update-degree-levels", (req, res) => {
   updateDegreeLevels.handleUpdateDegreeLevels(req, res, db);
-})
+});
 
-app.put("/api/update-diploma-levels", (req,res) => {
-
+app.put("/api/update-diploma-levels", (req, res) => {
   updateDiplomaLevels.handleUpdateDiplomaLevels(req, res, db);
-})
+});
 
 app.post("/api/get-handouts", (req, res) => {
   getHandouts.handleGetHandouts(req, res, db);
@@ -141,9 +146,8 @@ app.delete("/api/remove/:id/:level", (req, res) => {
 });
 
 app.delete("/api/remove-diploma/:level", (req, res) => {
-  removeDiploma.handleRemoveDiploma(req, res, db)
+  removeDiploma.handleRemoveDiploma(req, res, db);
 });
-
 
 app.delete("/api/delete-handout/:sno", (req, res) => {
   deleteHandout.handleDeleteHandout(req, res, db);
@@ -158,7 +162,7 @@ app.delete("/api/remove-register/:id/:level", (req, res) => {
 });
 
 app.delete("/api/remove-register-diploma/:level", (req, res) => {
-  removeDiplomaRegister.handleRemoveDiplomaRegister(req, res, db)
+  removeDiplomaRegister.handleRemoveDiplomaRegister(req, res, db);
 });
 
 app.delete("/api/remove-login/:id/:level", (req, res) => {
@@ -166,7 +170,7 @@ app.delete("/api/remove-login/:id/:level", (req, res) => {
 });
 
 app.delete("/api/remove-login-diploma/:level", (req, res) => {
-  removeDiplomaLogin.handleRemoveDiplomaLogin(req, res, db)
+  removeDiplomaLogin.handleRemoveDiplomaLogin(req, res, db);
 });
 
 app.put("/api/updateProfile", (req, res) => {
@@ -245,7 +249,7 @@ app.put("/api/upload", (req, res) => {
       res.json(row);
     })
     .catch((err) => {
-      res.json(err)
+      res.json(err);
     });
 });
 
@@ -258,7 +262,7 @@ app.post("/api/img", (req, res) => {
       res.json(row);
     })
     .catch((err) => {
-      res.json(err)
+      res.json(err);
     });
 });
 
@@ -270,11 +274,10 @@ app.post("/api/uploadids", (req, res) => {
       .insert({
         std_id: item.trim().toUpperCase(),
         level: Level,
-        programme: ProgrammeType
+        programme: ProgrammeType,
       })
       .then((row) => {
         if (index + 1 === arr.length) {
-
           res.send("success");
         }
       })
@@ -308,13 +311,12 @@ app.put("/api/remove-img", (req, res) => {
       res.json(row);
     })
     .catch((err) => {
-     res.json(err)
+      res.json(err);
     });
 });
 
 app.delete("/api/delete-id", (req, res) => {
   const { id } = req.body;
- 
 
   db("student_ids")
     .where("std_id", id)
@@ -331,7 +333,7 @@ app.delete("/api/delete-ids/:level", (req, res) => {
   const { level } = req.params;
 
   db("student_ids")
-    .where({ programme: "Degree", level: level, })
+    .where({ programme: "Degree", level: level })
     .del()
     .then((row) => {
       res.send("deleted");
@@ -340,7 +342,6 @@ app.delete("/api/delete-ids/:level", (req, res) => {
       res.send("error");
     });
 });
-
 
 app.delete("/api/delete-diploma-ids/:level", (req, res) => {
   const { level } = req.params;
@@ -356,7 +357,6 @@ app.delete("/api/delete-diploma-ids/:level", (req, res) => {
     });
 });
 
-
 app.post("/api/validateid", (req, res) => {
   const { ID, Level } = req.body;
   db("student_ids")
@@ -366,7 +366,6 @@ app.post("/api/validateid", (req, res) => {
       level: Level,
     })
     .then((row) => {
-
       if (row.length) {
         res.json("true");
       } else {
@@ -418,10 +417,7 @@ app.get("/api/uploaded-articles", (req, res) => {
 });
 
 app.delete("/api/delete-article/:article_id", (req, res) => {
-
-  const { article_id } = req.params
-
-
+  const { article_id } = req.params;
 
   db("articles")
     .del()
@@ -434,14 +430,13 @@ app.delete("/api/delete-article/:article_id", (req, res) => {
     });
 });
 
-
 app.put("/api/update-article", (req, res) => {
-  const { article_id,title,content } = req.body;
+  const { article_id, title, content } = req.body;
 
   db("articles")
     .update({
       title: title,
-      content: content
+      content: content,
     })
     .where({
       article_id: article_id,
@@ -466,16 +461,16 @@ app.put("/api/update-article", (req, res) => {
 // })
 
 app.get("/api/get-article/:id", (req, res) => {
-  const { id} = req.params;
+  const { id } = req.params;
 
-db.raw(
+  db.raw(
     `select title, content,article_id,  TO_CHAR(upload_date, 'Mon dd, yyyy') as date from articles where article_id='${id}'`
-  ).then((row) => res.json(row)).catch(err => {
-    res.json(err)
-  });
- 
+  )
+    .then((row) => res.json(row))
+    .catch((err) => {
+      res.json(err);
+    });
 });
-
 
 app.post("/api/complains-count", (req, res) => {
   const { Id, Count, Receiver } = req.body;
@@ -484,7 +479,7 @@ app.post("/api/complains-count", (req, res) => {
     .insert({
       std_id: Id,
       count: Count,
-      receiver: Receiver
+      receiver: Receiver,
     })
     .then((response) => {
       res.send(response);
@@ -518,7 +513,7 @@ app.post("/api/send-reply", (req, res) => {
           res.json(response);
         })
         .catch((err) => {
-         res.json(err)
+          res.json(err);
         });
     })
     .catch((err) => {
@@ -527,57 +522,55 @@ app.post("/api/send-reply", (req, res) => {
 });
 
 app.post("/api/get-complains", (req, res) => {
-  const { Receiver } = req.body
+  const { Receiver } = req.body;
 
   switch (Receiver) {
-    case 'admin':
+    case "admin":
       db("student_complains")
         .select("*")
         .where({
-          receiver: "Busa"
+          receiver: "Busa",
         })
         .then((response) => res.json(response))
         .catch((err) => res.json(err));
       break;
-    case 'marketing':
+    case "marketing":
       db("student_complains")
         .select("*")
         .where({
-          receiver: "Department of Procurement and Marketing"
+          receiver: "Department of Procurement and Marketing",
         })
         .then((response) => res.json(response))
         .catch((err) => res.json(err));
       break;
-    case 'management':
+    case "management":
       db("student_complains")
         .select("*")
         .where({
-          receiver: "Department of Management Studies"
+          receiver: "Department of Management Studies",
         })
         .then((response) => res.json(response))
         .catch((err) => res.json(err));
       break;
-    case 'banking and finance':
+    case "banking and finance":
       db("student_complains")
         .select("*")
         .where({
-          receiver: "Department of Banking and Finance"
+          receiver: "Department of Banking and Finance",
         })
         .then((response) => res.json(response))
         .catch((err) => res.json(err));
       break;
-    case 'accountancy':
+    case "accountancy":
       db("student_complains")
         .select("*")
         .where({
-          receiver: "Department of Accountancy"
+          receiver: "Department of Accountancy",
         })
         .then((response) => res.json(response))
         .catch((err) => res.json(err));
       break;
   }
-
-
 });
 
 app.post("/api/get-message-count", (req, res) => {
@@ -598,20 +591,18 @@ app.post("/api/get-message-count", (req, res) => {
 
 app.post("/api/get-messages", (req, res) => {
   const { Id } = req.body;
-  
+
   db.raw(
     "select sno,time, subject,message,  TO_CHAR(reply_date, 'Mon dd yyyy') as date from messages where std_id = " +
-    "'" +
-    Id +
-    "'"
+      "'" +
+      Id +
+      "'"
   ).then((row) => res.json(row));
 });
 
 app.post("/api/get-complains-count", (req, res) => {
+  const { Receiver } = req.body;
 
-  const { Receiver } = req.body
-
-  
   db("complains_count")
     .count("*")
     .where({ receiver: Receiver })
@@ -642,10 +633,7 @@ app.put("/api/reset-messages-count", (req, res) => {
 });
 
 app.delete("/api/remove-complains-count/:receiver", (req, res) => {
-
-  const { receiver } = req.params
-
-
+  const { receiver } = req.params;
 
   db("complains_count")
     .del()
@@ -689,9 +677,7 @@ app.delete("/api/delete-complain/:id/:sno", (req, res) => {
       .catch((err) => {
         res.json(err);
       });
-  }
-
-  else {
+  } else {
     db("student_complains")
       .del()
       .where({
@@ -704,8 +690,6 @@ app.delete("/api/delete-complain/:id/:sno", (req, res) => {
         res.json(err);
       });
   }
-
-
 });
 
 app.post("/api/send-complain", (req, res) => {
@@ -719,7 +703,7 @@ app.post("/api/send-complain", (req, res) => {
       contact: Contact,
       subject: Subject,
       complain: Complain,
-      receiver: Receiver
+      receiver: Receiver,
     })
     .then((response) => {
       res.json(response);
@@ -764,9 +748,15 @@ app.delete("/api/delete-key-people/:sno", (req, res) => {
 });
 
 app.post("/api/create-registration", (req, res) => {
-  const { FirstName, MiddleName, LastName, StudentID, Level, Gender, ProgrammeType
-  } =
-    req.body;
+  const {
+    FirstName,
+    MiddleName,
+    LastName,
+    StudentID,
+    Level,
+    Gender,
+    ProgrammeType,
+  } = req.body;
 
   db("registration")
     .insert({
@@ -777,10 +767,10 @@ app.post("/api/create-registration", (req, res) => {
       programme_type: ProgrammeType,
       std_id: StudentID.toUpperCase(),
       level: Level,
-      status: "❌"
+      status: "❌",
     })
     .then((row) => {
-      res.json(row)
+      res.json(row);
     });
 });
 
